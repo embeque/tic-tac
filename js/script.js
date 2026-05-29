@@ -1,5 +1,6 @@
 let humanScore = 0;
 let computerScore = 0;
+let round = 5;
 
 function getComputerChoice(){
   randn = Math.floor(Math.random()*3)+1
@@ -16,18 +17,20 @@ function getComputerChoice(){
 
 function playRound(humanChoice, computerChoice){
   humanChoice = humanChoice.toLowerCase()
+  let output;
   if ((humanChoice == 'rock' && computerChoice == 'sci') || (humanChoice == 'paper' && computerChoice == 'rock') || (humanChoice == 'sci' && computerChoice == 'paper')){
-    console.log('You Win!', humanChoice,'beats', computerChoice);
+    output = 'You Win! '+ humanChoice + ' beats '+ computerChoice;
     humanScore++;
   }
   else if(humanChoice == computerChoice){
-    console.log('You both played the same move', humanChoice, ' !! Draw !!');
+    output = 'You both played the same move ' + humanChoice + ' !! Draw !!';
   }
   else {
-    console.log('You Lose!', computerChoice, 'beats', humanChoice);
+    output = 'You Lose! ' + computerChoice + ' beats ' + humanChoice;
     computerScore++;
   }
-  return;
+  // console.log(output);
+  return output;
 }
 
 
@@ -46,12 +49,29 @@ function playRound(humanChoice, computerChoice){
 // }
 
 
-function updateGUI(){
+function updateGUI(result){
   const playerScorebox = document.querySelector('#player').children[1];
   const compScorebox = document.querySelector('#comp').children[1];
+  
+  const outputBox = document.querySelector('#head');
+  console.dir(result);
+  outputBox.textContent = result;
 
   playerScorebox.textContent = humanScore;
   compScorebox.textContent = computerScore;
+}
+
+function endGameCheck(){
+    const winnerBox = document.querySelector('#outputs').children[0];
+    // console.dir(winnerBox)
+  if (humanScore >= round){
+    winnerBox.textContent = 'You Win !!';
+    return true
+  } else if(computerScore >= round){
+    winnerBox.textContent = 'You Lose !!';
+    return true
+  } 
+  return false;
 }
 
 // Even Listerners on choices
@@ -60,8 +80,12 @@ const selection = document.querySelector('#selection');
 function choiceHandler(e){
   value = e.target.id;
   // console.log('value is stored');
-  playRound(value, getComputerChoice());
-  updateGUI();
+  result = playRound(value, getComputerChoice());
+  updateGUI(result);
+  isEnd = endGameCheck();
+  if (isEnd){
+    e.currentTarget.removeEventListener('click', choiceHandler)
+  } 
 }
 selection.addEventListener('click', choiceHandler);
 
