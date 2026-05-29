@@ -33,6 +33,17 @@ function playRound(humanChoice, computerChoice){
   return output;
 }
 
+function pretify(value){
+  if (value == 'rock'){
+    return 'Rock';
+  } else if (value == 'paper'){
+    return 'Paper';
+  } else if (value == 'sci'){
+    return 'Scissor';
+  } else {
+    return '';
+  }
+}
 
 
 // //we don't need this
@@ -49,14 +60,17 @@ function playRound(humanChoice, computerChoice){
 // }
 
 
-function updateGUI(result){
-  const playerScorebox = document.querySelector('#player').children[1];
-  const compScorebox = document.querySelector('#comp').children[1];
+function updateGUI(result, compMove){
+  const playerScorebox = document.querySelector('#player').children[0];
+  const compScorebox = document.querySelector('#comp').children[0];
   
   const outputBox = document.querySelector('#head');
   console.dir(result);
   outputBox.textContent = result;
 
+  const compMoveBox = document.querySelector('#compMove').children[1];
+  compMoveBox.textContent = pretify(compMove);
+  
   playerScorebox.textContent = humanScore;
   compScorebox.textContent = computerScore;
 }
@@ -80,12 +94,15 @@ const selection = document.querySelector('#selection');
 function choiceHandler(e){
   value = e.target.id;
   // console.log('value is stored');
-  result = playRound(value, getComputerChoice());
-  updateGUI(result);
-  isEnd = endGameCheck();
-  if (isEnd){
-    e.currentTarget.removeEventListener('click', choiceHandler)
-  } 
+  if (value != 'selection'){
+    compMove =  getComputerChoice();
+    result = playRound(value, compMove);
+    updateGUI(result, compMove);
+    isEnd = endGameCheck();
+    if (isEnd){
+      e.currentTarget.removeEventListener('click', choiceHandler)
+    } 
+  }
 }
 selection.addEventListener('click', choiceHandler);
 
