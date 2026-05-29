@@ -1,3 +1,6 @@
+let humanScore = 0;
+let computerScore = 0;
+
 function getComputerChoice(){
   randn = Math.floor(Math.random()*3)+1
   if (randn <= 1){
@@ -10,14 +13,6 @@ function getComputerChoice(){
     return 'sci';
   }
 }
-
-function getHumanChoice(){
-  input = prompt('Enter you choice: rock, paper, sci');
-  return input;
-}
-
-let humanScore = 0;
-let computerScore = 0;
 
 function playRound(humanChoice, computerChoice){
   humanChoice = humanChoice.toLowerCase()
@@ -35,23 +30,66 @@ function playRound(humanChoice, computerChoice){
   return;
 }
 
-// const humanSelection = getHumanChoice();
-// const computerSelection = getComputerChoice();
 
-// playRound(humanSelection, computerSelection)
 
-function playGame(rounds){
-  for(let i = 0; i < rounds; i++){
-    let humanSelection = getHumanChoice();
-    let computerSelection = getComputerChoice();
+// //we don't need this
+// function playGame(rounds){
+//   for(let i = 0; i < rounds; i++){
+//     let humanSelection = getHumanChoice();
+//     let computerSelection = getComputerChoice();
 
-    playRound(humanSelection, computerSelection);
-  }
+//     playRound(humanSelection, computerSelection);
+//   }
 
-  console.log('Your Score:', humanScore);
-  console.log('Computer Score:', computerScore)
+//   console.log('Your Score:', humanScore);
+//   console.log('Computer Score:', computerScore)
+// }
+
+
+function updateGUI(){
+  const playerScorebox = document.querySelector('#player').children[1];
+  const compScorebox = document.querySelector('#comp').children[1];
+
+  playerScorebox.textContent = humanScore;
+  compScorebox.textContent = computerScore;
 }
-playGame(5);
+
+// Even Listerners on choices
+const selection = document.querySelector('#selection');
+// Event Handler and game invoker
+function choiceHandler(e){
+  value = e.target.id;
+  // console.log('value is stored');
+  playRound(value, getComputerChoice());
+  updateGUI();
+}
+selection.addEventListener('click', choiceHandler);
+
+// function getHumanChoice(value){
+//   if (value)
+//     return value;
+// }
+// getHumanChoice();
+// console.log(value);
+
+
+
+// make workflow like this
+// whenever player click on button a game is played
+
+
+
+
+
+
+
+
+
+
+
+
+
+// playGame(5);
 
 // function check(){
 //   let rock = 0;
